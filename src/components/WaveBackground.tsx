@@ -1,4 +1,4 @@
-import { Canvas, useFrame, extend, ReactThreeFiber } from '@react-three/fiber';
+import { Canvas, useFrame, extend } from '@react-three/fiber';
 import { shaderMaterial, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { useRef } from 'react';
@@ -55,13 +55,7 @@ extend({ WaveShaderMaterial });
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            waveShaderMaterial: ReactThreeFiber.Object3DNode<THREE.ShaderMaterial, typeof WaveShaderMaterial> & {
-                uTime?: number;
-                uTexture?: THREE.Texture;
-                uResolution?: THREE.Vector2;
-                uWaveStrength?: number;
-                uWaveFrequency?: number;
-            };
+            waveShaderMaterial: any;
         }
     }
 }
