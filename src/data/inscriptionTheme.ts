@@ -36,6 +36,8 @@ import hhVector from '../assets/img/hip-hop/vector.svg';
 export interface InscriptionThemeData {
     backgroundClass: string;
     backgroundImage?: string;
+    backgroundScale?: number; // Resolution scale (0-1)
+    backgroundZoom?: number; // CSS scale (visual zoom)
     titleImage?: string; // Added optional title image
     textColor: string;
     accentColor: string;
@@ -50,6 +52,8 @@ export const inscriptionTheme: Record<'hiphop' | 'modern', InscriptionThemeData>
     hiphop: {
         backgroundClass: "bg-[#1F2021]",
         backgroundImage: hhBg,
+        backgroundScale: 0.5, // Lower resolution for performance
+        backgroundZoom: 1.2, // Visual zoom
         titleImage: hhVector, // Replaces text title
         textColor: "text-white",
         accentColor: "border-white/30 text-white bg-white/10 hover:bg-white/20",

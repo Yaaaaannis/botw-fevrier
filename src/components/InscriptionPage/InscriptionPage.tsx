@@ -3,6 +3,7 @@ import { inscriptionTheme } from '../../data/inscriptionTheme';
 import hhSwitch from '../../assets/img/hip-hop/switch.svg';
 import { useTheme } from '../../context/ThemeContext';
 import { WaveBackground } from '../WaveBackground';
+import { UnicornBackground } from '../UnicornBackground';
 
 export default function InscriptionPage() {
     const { theme, switchTheme } = useTheme();
@@ -18,8 +19,13 @@ export default function InscriptionPage() {
                 backgroundSize: theme === 'hiphop' ? '120%' : 'cover'
             }}
         >
-            {theme === 'hiphop' && data.backgroundImage && (
-                <WaveBackground imagePath={data.backgroundImage} />
+            {theme === 'hiphop' ? (
+                <UnicornBackground
+                    scale={data.backgroundScale}
+                    zoom={data.backgroundZoom}
+                />
+            ) : (
+                data.backgroundImage && <WaveBackground imagePath={data.backgroundImage} />
             )}
 
             {/* Header */}
