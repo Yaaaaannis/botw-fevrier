@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { inscriptionTheme } from '../../data/inscriptionTheme';
 import hhSwitch from '../../assets/img/hip-hop/switch.svg';
 import { useTheme } from '../../context/ThemeContext';
+import { WaveBackground } from '../WaveBackground';
 
 export default function InscriptionPage() {
     const { theme, switchTheme } = useTheme();
@@ -13,10 +14,13 @@ export default function InscriptionPage() {
         <div
             className={`w-full min-h-screen ${data.backgroundClass} relative overflow-hidden flex flex-col bg-cover bg-center `}
             style={{
-                backgroundImage: data.backgroundImage ? `url(${data.backgroundImage})` : undefined,
+                backgroundImage: theme === 'hiphop' ? 'none' : (data.backgroundImage ? `url(${data.backgroundImage})` : undefined),
                 backgroundSize: theme === 'hiphop' ? '120%' : 'cover'
             }}
         >
+            {theme === 'hiphop' && data.backgroundImage && (
+                <WaveBackground imagePath={data.backgroundImage} />
+            )}
 
             {/* Header */}
             <div className={`w-full absolute top-0 left-0 h-full pointer-events-none z-20 ${data.textColor}`}>
@@ -126,7 +130,7 @@ export default function InscriptionPage() {
                         <img
                             src={hhSwitch}
                             alt="Switch Vibe"
-                            className="absolute top-0 left-0 h-full max-w-none"
+                            className="absolute top-0 left-0 h-full max-w-none scale-x-280 scale-y-110    "
                             style={{ width: '150px', height: '100%', objectPosition: 'left', }}
                         />
                     </div>
