@@ -1,14 +1,18 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { inscriptionTheme } from '../../data/inscriptionTheme';
+import type { GridItem } from '../../data/inscriptionTheme';
 import hhSwitch from '../../assets/img/hip-hop/switch.svg';
 import { useTheme } from '../../context/ThemeContext';
 import { WaveBackground } from '../WaveBackground';
 import { UnicornBackground } from '../UnicornBackground';
+import { InscriptionModal } from './InscriptionModal';
 
 export default function InscriptionPage() {
     const { theme, switchTheme } = useTheme();
     const navigate = useNavigate();
     const data = inscriptionTheme[theme];
+    const [selectedItem, setSelectedItem] = useState<GridItem | null>(null);
 
     return (
 
@@ -52,7 +56,7 @@ export default function InscriptionPage() {
                         className="absolute font-serif text-[32px] leading-[43px] tracking-tight text-center pointer-events-auto"
                         style={{
                             left: theme === 'modern' ? 'calc(50% - 117px + 0.5px)' : 'calc(50% - 133px)',
-                            top: theme === 'modern' ? '20px' : '35px', // Lower for Hip Hop to overlap images
+                            top: theme === 'modern' ? '20px' : '20px', // Lower for Hip Hop to overlap images
                             width: theme === 'modern' ? '234px' : '266px',
                             height: theme === 'modern' ? '43px' : '60px',
                             zIndex: 30 // Ensure it's on top of everything
@@ -90,7 +94,11 @@ export default function InscriptionPage() {
                     // Grid Layout (Modern & HipHop)
                     <div className="grid grid-cols-4 gap-[20px] max-w-[924px] mx-auto">
                         {data.gridItems.map((item) => (
-                            <div key={item.id} className="relative w-[216px] h-[216px] group overflow-hidden bg-gray-200">
+                            <div
+                                key={item.id}
+                                className="relative w-[216px] h-[216px] group overflow-hidden bg-gray-200 cursor-pointer"
+                                onClick={() => setSelectedItem(item)}
+                            >
                                 <img
                                     src={item.image}
                                     alt={`Class ${item.date}`}
@@ -142,6 +150,17 @@ export default function InscriptionPage() {
                     </div>
                 )}
             </button>
+
+            {/* Modal */}
+            {selectedItem && (
+                <InscriptionModal
+                    isOpen={!!selectedItem}
+                    onClose={() => setSelectedItem(null)}
+                    item={selectedItem}
+                    themeData={data}
+                    theme={theme}
+                />
+            )}
         </div >
     );
 }

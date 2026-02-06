@@ -46,6 +46,12 @@ export interface InscriptionThemeData {
     buttonText: string;
     decorativeText: string;
     gridItems?: GridItem[];
+    // Modal Data
+    modalSubtitle: string;
+    modalDescription: string;
+    modalLevelInfo: string;
+    duration: string;
+    reservationLabel: string;
 }
 
 export const inscriptionTheme: Record<'hiphop' | 'modern', InscriptionThemeData> = {
@@ -74,7 +80,12 @@ export const inscriptionTheme: Record<'hiphop' | 'modern', InscriptionThemeData>
             { id: 10, image: hh1, date: "05/03", time: "14:00" },
             { id: 11, image: hh2, date: "12/03", time: "18:00" },
             { id: 12, image: hh3, date: "18/03", time: "21:00" },
-        ]
+        ],
+        modalSubtitle: "Open to adults of all levels.",
+        modalDescription: "Move at your own rhythm in a guided hip hop session. This class focuses on body awareness, fluidity, and musicality.",
+        modalLevelInfo: "Beginner to intermediate\nNo previous dance experience required.",
+        duration: "75 minutes",
+        reservationLabel: "Reservation"
     },
     modern: {
         backgroundClass: "bg-[#FFF5EE]", // Updated to match Figma #FFF5EE
@@ -97,6 +108,11 @@ export const inscriptionTheme: Record<'hiphop' | 'modern', InscriptionThemeData>
             { id: 10, image: modern10, date: "05/03", time: "14:00" },
             { id: 11, image: modern11, date: "12/03", time: "18:00" },
             { id: 12, image: modern12, date: "18/03", time: "21:00" },
-        ]
+        ],
+        modalSubtitle: "Open to adults of all levels.",
+        modalDescription: "Move at your own rhythm in a guided contemporary dance session. This class focuses on body awareness, fluidity, and musicality.",
+        modalLevelInfo: "Beginner to intermediate\nNo previous dance experience required.",
+        duration: "75 minutes",
+        reservationLabel: "Reservation"
     }
 };
