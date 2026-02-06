@@ -104,7 +104,7 @@ export default function InscriptionPage() {
             <button
                 onClick={switchTheme}
                 className={`absolute z-30 text-[16px] z-[100] font-serif tracking-tight cursor-pointer transition-opacity group whitespace-nowrap ${theme === 'hiphop'
-                    ? 'text-white mix-blend-difference ' // Hip Hop also needs difference now
+                    ? 'text-white' // Blend mode moved to inner span
                     : 'text-white mix-blend-difference hover:opacity-70'
                     }`}
                 style={{
@@ -120,7 +120,7 @@ export default function InscriptionPage() {
                 }}
 
             >
-                Switch the vibe
+                <span className={`relative z-10 ${theme === 'hiphop' ? 'mix-blend-difference' : ''}`}>Switch the vibe</span>
                 {theme === 'hiphop' && (
                     <div className="absolute top-0 left-0 h-full w-0 overflow-hidden group-hover:w-full transition-[width] duration-500 ease-out z-[1]">
                         <img
