@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+
+
+
+@font-face {
+    font-family: 'hip-hop';
+    src: url('./assets/font.otf');
+}

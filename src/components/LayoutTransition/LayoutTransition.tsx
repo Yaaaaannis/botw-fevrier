@@ -1,17 +1,14 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type ReactNode } from 'react';
 import { gsap } from 'gsap';
-import HipHopLayout from '../../layouts/HipHopLayout';
-import ModernLayout from '../../layouts/ModernLayout';
-
-type LayoutType = 'hiphop' | 'modern';
+import { type LayoutType, ThemeContext } from '../../context/ThemeContext';
 
 interface LayoutTransitionProps {
     currentLayout: LayoutType;
     onSwitch: () => void;
+    children: ReactNode;
 }
 
-export default function LayoutTransition({ currentLayout, onSwitch }: LayoutTransitionProps) {
-    // We need to track the internal state for the transition
+export default function LayoutTransition({ currentLayout, onSwitch, children }: LayoutTransitionProps) {
     // activeLayout is the one we are transitioning TO (or currently showing).
     // previousLayout is the one we are transitioning FROM.
     const [activeLayout, setActiveLayout] = useState<LayoutType>(currentLayout);
@@ -88,16 +85,14 @@ export default function LayoutTransition({ currentLayout, onSwitch }: LayoutTran
         return () => ctx.revert();
     }, [isTransitioning]);
 
-    const renderLayout = (type: LayoutType) => {
-        return type === 'hiphop' ? <HipHopLayout onSwitch={onSwitch} /> : <ModernLayout onSwitch={onSwitch} />;
-    };
-
     return (
         <div className="relative w-full h-screen overflow-hidden bg-black">
 
             {/* Bottom Layer */}
             <div className="absolute inset-0 z-0">
-                {(isTransitioning && previousLayout) ? renderLayout(previousLayout) : renderLayout(activeLayout)}
+                <ThemeContext.Provider value={{ theme: isTransitioning && previousLayout ? previousLayout : activeLayout, switchTheme: onSwitch }}>
+                    {children}
+                </ThemeContext.Provider>
             </div>
 
             {/* Top Layer (Active Layout - Masked) */}
@@ -107,7 +102,9 @@ export default function LayoutTransition({ currentLayout, onSwitch }: LayoutTran
                     className="absolute inset-0 z-10 will-change-[clip-path]"
                     style={{ clipPath: 'polygon(0 0, 0 0, 0 0)' }}
                 >
-                    {renderLayout(activeLayout)}
+                    <ThemeContext.Provider value={{ theme: activeLayout, switchTheme: onSwitch }}>
+                        {children}
+                    </ThemeContext.Provider>
                 </div>
             )}
 
