@@ -55,10 +55,10 @@ function Carousel({ images }: { images: any[] }) {
                 // We tell GSAP to start them at x: -50 (way off to the left) and animate to natural state.
 
                 gsap.from(item.position, {
-                    x: 60 + i * 5, // Start from far right, staggered in space
-                    duration: 2.0, // Increased duration for the longer travel
+                    x: 80 + i * 12, // Increased spacing significantly (train effect)
+                    duration: 2.5, // Increased duration to accommodate larger distance
                     ease: "power3.out",
-                    delay: i * 0.05, // Slightly reduced stagger time since spatial stagger handles separation
+                    delay: i * 0.05,
                 });
 
                 // Also scale them up from 0 for a cleaner entrance
