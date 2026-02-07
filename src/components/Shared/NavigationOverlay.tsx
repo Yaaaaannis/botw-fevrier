@@ -7,7 +7,6 @@ export function NavigationOverlay() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const isInscriptionPage = location.pathname === '/';
     const isVideoPage = location.pathname === '/video';
 
     return (

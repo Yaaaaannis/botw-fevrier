@@ -37,7 +37,7 @@ function Carousel({ images }: { images: any[] }) {
     // Use tan to ensure images touch at the edges (circumscribed polygon)
     const radius = IMAGE_WIDTH / (2 * Math.tan(Math.PI / count));
 
-    useFrame((state, delta) => {
+    useFrame(() => {
         if (!groupRef.current) return;
 
         // Rotate the group based on scroll offset
