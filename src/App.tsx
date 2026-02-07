@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Loader from './components/Loader/Loader';
 import LayoutTransition from './components/LayoutTransition/LayoutTransition';
 import HomePage from './components/HomePage/HomePage';
@@ -8,6 +8,11 @@ import VideoPage from './components/VideoPage/VideoPage';
 import { type LayoutType } from './context/ThemeContext';
 import SmoothScrolling from './components/SmoothScrolling';
 import './App.css';
+
+function RouteAwareLoader() {
+  const location = useLocation();
+  return location.pathname === '/' ? <Loader /> : null;
+}
 
 function App() {
   const [currentLayout, setCurrentLayout] = useState<LayoutType>('modern');
@@ -18,7 +23,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Loader />
+      <RouteAwareLoader />
       <SmoothScrolling>
         <LayoutTransition
           currentLayout={currentLayout}

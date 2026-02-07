@@ -1,7 +1,8 @@
-import { useRef, useContext, useMemo } from 'react';
+import { useRef, useContext, useMemo, useLayoutEffect, forwardRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Image, ScrollControls, useScroll, Environment } from '@react-three/drei';
 import * as THREE from 'three';
+import gsap from 'gsap';
 import { ThemeContext } from '../../context/ThemeContext';
 import { inscriptionTheme } from '../../data/inscriptionTheme';
 import { NavigationOverlay } from '../Shared/NavigationOverlay';
@@ -9,14 +10,14 @@ import { PageHeader } from '../Shared/PageHeader';
 
 import { UnicornBackground } from '../UnicornBackground';
 
-function CarouselItem({ image, angle, radius, width }: { image: string, angle: number, radius: number, width: number }) {
+const CarouselItem = forwardRef<THREE.Group, { image: string, angle: number, radius: number, width: number }>(({ image, angle, radius, width }, ref) => {
     // Cartesian coordinates for the position on the circle
     // We position them based on the angle
     const x = Math.sin(angle) * radius;
     const z = Math.cos(angle) * radius;
 
     return (
-        <group position={[x, 0, z]} rotation={[0, angle, 0]}>
+        <group ref={ref} position={[x, 0, z]} rotation={[0, angle, 0]}>
             <Image
                 url={image}
                 transparent
@@ -25,10 +26,11 @@ function CarouselItem({ image, angle, radius, width }: { image: string, angle: n
             />
         </group>
     );
-}
+});
 
 function Carousel({ images }: { images: any[] }) {
     const groupRef = useRef<THREE.Group>(null);
+    const itemsRef = useRef<(THREE.Group | null)[]>([]);
     const scroll = useScroll();
 
     // Geometry settings
@@ -36,6 +38,51 @@ function Carousel({ images }: { images: any[] }) {
     const count = images.length;
     // Use tan to ensure images touch at the edges (circumscribed polygon)
     const radius = IMAGE_WIDTH / (2 * Math.tan(Math.PI / count));
+
+    useLayoutEffect(() => {
+        if (itemsRef.current.length === 0) return;
+
+        // Reset refs array to match current images length to avoid stale refs if images change
+        itemsRef.current = itemsRef.current.slice(0, images.length);
+
+        const ctx = gsap.context(() => {
+            itemsRef.current.forEach((item, i) => {
+                if (!item) return;
+
+                // Animate from Left
+                // We perform a "from" animation. 
+                // The elements are already at their final computed position (by React props).
+                // We tell GSAP to start them at x: -50 (way off to the left) and animate to natural state.
+
+                gsap.from(item.position, {
+                    x: 60 + i * 5, // Start from far right, staggered in space
+                    duration: 2.0, // Increased duration for the longer travel
+                    ease: "power3.out",
+                    delay: i * 0.05, // Slightly reduced stagger time since spatial stagger handles separation
+                });
+
+                // Also scale them up from 0 for a cleaner entrance
+                gsap.from(item.scale, {
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                    duration: 1.5,
+                    ease: "back.out(1.7)",
+                    delay: i * 0.1,
+                });
+
+                // Add a little rotation spin
+                gsap.from(item.rotation, {
+                    y: item.rotation.y + Math.PI, // Spin 180 deg
+                    duration: 1.5,
+                    ease: "power3.out",
+                    delay: i * 0.1,
+                });
+            });
+        });
+
+        return () => ctx.revert();
+    }, [images, count]);
 
     useFrame(() => {
         if (!groupRef.current) return;
@@ -55,6 +102,7 @@ function Carousel({ images }: { images: any[] }) {
                 return (
                     <CarouselItem
                         key={`${item.id}-${i}`}
+                        ref={(el) => { itemsRef.current[i] = el; }}
                         image={item.image}
                         angle={angle}
                         radius={radius}
