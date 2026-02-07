@@ -4,7 +4,9 @@ import Loader from './components/Loader/Loader';
 import LayoutTransition from './components/LayoutTransition/LayoutTransition';
 import HomePage from './components/HomePage/HomePage';
 import InscriptionPage from './components/InscriptionPage/InscriptionPage';
+import VideoPage from './components/VideoPage/VideoPage';
 import { type LayoutType } from './context/ThemeContext';
+import SmoothScrolling from './components/SmoothScrolling';
 import './App.css';
 
 function App() {
@@ -17,15 +19,18 @@ function App() {
   return (
     <BrowserRouter>
       <Loader />
-      <LayoutTransition
-        currentLayout={currentLayout}
-        onSwitch={switchLayout}
-      >
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/inscription" element={<InscriptionPage />} />
-        </Routes>
-      </LayoutTransition>
+      <SmoothScrolling>
+        <LayoutTransition
+          currentLayout={currentLayout}
+          onSwitch={switchLayout}
+        >
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/inscription" element={<InscriptionPage />} />
+            <Route path="/video" element={<VideoPage />} />
+          </Routes>
+        </LayoutTransition>
+      </SmoothScrolling>
     </BrowserRouter>
   );
 }

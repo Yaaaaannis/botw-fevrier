@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import type { GridItem, InscriptionThemeData } from '../../data/inscriptionTheme';
-import { ReservationForm } from './ReservationForm';
 
 interface InscriptionModalProps {
     isOpen: boolean;
@@ -11,15 +10,13 @@ interface InscriptionModalProps {
 }
 
 export const InscriptionModal: React.FC<InscriptionModalProps> = ({ isOpen, onClose, item, themeData, theme }) => {
-    const [isReservationMode, setIsReservationMode] = React.useState(false);
-
     // Prevent scrolling when modal is open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'unset';
-            setIsReservationMode(false);
+            // Stop video by resetting iframe or unmounting (handled by !isOpen)
         }
         return () => {
             document.body.style.overflow = 'unset';
@@ -32,13 +29,10 @@ export const InscriptionModal: React.FC<InscriptionModalProps> = ({ isOpen, onCl
     const videoUrl = "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=0&mute=0";
 
     return (
-        <div
-            className={`fixed inset-0 z-50 flex items-center bg-black/60 z-1000 transition-all duration-500 ${isReservationMode ? 'justify-start' : 'justify-center'}`}
-            onClick={onClose}
-        >
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 z-1000" onClick={onClose}>
             {/* Modal Container */}
             <div
-                className="relative w-[815px] h-full bg-cover bg-center overflow-hidden shadow-2xl transition-all duration-500"
+                className="relative w-[815px] h-full bg-cover bg-center overflow-hidden shadow-2xl "
                 style={{ backgroundImage: `url(${item.image})` }}
                 onClick={(e) => e.stopPropagation()}
             >
@@ -111,10 +105,7 @@ export const InscriptionModal: React.FC<InscriptionModalProps> = ({ isOpen, onCl
                         </div>
 
                         {/* Center Reservation with Lines */}
-                        <div
-                            className="flex items-center gap-4 text-[24px] leading-[32px] tracking-[-0.02em] cursor-pointer hover:opacity-80 transition-opacity"
-                            onClick={() => setIsReservationMode(true)}
-                        >
+                        <div className="flex items-center gap-4 text-[24px] leading-[32px] tracking-[-0.02em]">
                             {theme !== 'hiphop' && <div className="w-[48px] h-[1px] bg-white rotate-90 transform origin-center translate-y-2"></div>}
                             <span className="px-[12px]">{themeData.reservationLabel}</span>
                             {theme !== 'hiphop' && <div className="w-[48px] h-[1px] bg-white rotate-90 transform origin-center translate-y-2"></div>}
@@ -126,15 +117,6 @@ export const InscriptionModal: React.FC<InscriptionModalProps> = ({ isOpen, onCl
                         </div>
                     </div>
                 </div>
-            </div>
-
-            {/* Reservation Form Modal */}
-            <div
-                className={`absolute left-[900px] transition-all duration-500 transform ${isReservationMode ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10 pointer-events-none'}`}
-                style={{ top: 'calc(50% - 253px/2 + 0.5px)' }}
-                onClick={(e) => e.stopPropagation()}
-            >
-                <ReservationForm />
             </div>
         </div>
     );
