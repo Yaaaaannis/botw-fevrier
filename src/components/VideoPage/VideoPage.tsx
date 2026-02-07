@@ -7,6 +7,8 @@ import { inscriptionTheme } from '../../data/inscriptionTheme';
 import { NavigationOverlay } from '../Shared/NavigationOverlay';
 import { PageHeader } from '../Shared/PageHeader';
 
+import { UnicornBackground } from '../UnicornBackground';
+
 function CarouselItem({ image, angle, radius, width }: { image: string, angle: number, radius: number, width: number }) {
     // Cartesian coordinates for the position on the circle
     // We position them based on the angle
@@ -81,13 +83,18 @@ export default function VideoPage() {
     }, [originalImages]);
 
     return (
-        <div className={`w-full h-screen overflow-hidden ${activeTheme.backgroundClass} `}>
+        <div className={`w-full h-screen overflow-hidden ${activeTheme.backgroundClass} relative`}>
+            <UnicornBackground
+                scale={activeTheme.backgroundScale}
+                zoom={activeTheme.backgroundZoom}
+                projectId={activeTheme.projectId}
+            />
             {/* UI Overlay */}
             <NavigationOverlay />
             <PageHeader />
 
             {/* R3F Canvas */}
-            <Canvas camera={{ position: [0, 0, 28], fov: 50 }} className="w-full h-full">
+            <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 28], fov: 50 }} className="w-full h-full">
                 <fog attach="fog" args={[theme === 'modern' ? '#FFF5EE' : '#1F2021', 5, 20]} />
                 <ambientLight intensity={1} />
                 <Environment preset="city" />

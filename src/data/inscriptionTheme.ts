@@ -38,6 +38,7 @@ export interface InscriptionThemeData {
     backgroundImage?: string;
     backgroundScale?: number; // Resolution scale (0-1)
     backgroundZoom?: number; // CSS scale (visual zoom)
+    projectId?: string; // Unicorn Studio Project ID
     titleImage?: string; // Added optional title image
     textColor: string;
     accentColor: string;
@@ -60,6 +61,7 @@ export const inscriptionTheme: Record<'hiphop' | 'modern', InscriptionThemeData>
         backgroundImage: hhBg,
         backgroundScale: 0.5, // Lower resolution for performance
         backgroundZoom: 1.2, // Visual zoom
+        projectId: "U2v0AXIPENr89Kua3DGc",
         titleImage: hhVector, // Replaces text title
         textColor: "text-white",
         accentColor: "border-white/30 text-white bg-white/10 hover:bg-white/20",
@@ -113,6 +115,9 @@ export const inscriptionTheme: Record<'hiphop' | 'modern', InscriptionThemeData>
         modalDescription: "Move at your own rhythm in a guided contemporary dance session. This class focuses on body awareness, fluidity, and musicality.",
         modalLevelInfo: "Beginner to intermediate\nNo previous dance experience required.",
         duration: "75 minutes",
-        reservationLabel: "Reservation"
+        reservationLabel: "Reservation",
+        backgroundScale: 0.5,
+        backgroundZoom: 1.2,
+        projectId: "FEjBqhYE9AQQVCbzWDUX"
     }
 };
